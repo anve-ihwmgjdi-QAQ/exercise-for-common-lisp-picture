@@ -14,6 +14,9 @@
 			       (iter h (the fixnum (+ w 1))))))))
       (iter 0 0))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;list 'used-high or 'used-width code;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;high  (up . down)
 ;;width (left . right)
 
@@ -23,7 +26,7 @@
 ;(defun used-down (used-seq) (cdr used-seq))
 ;(defun used-left (used-seq) (car used-seq))
 ;(defun used-right (used-seq) (cdr used-seq))
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun make-used-seq (up-or-left down-or-right)
   (declare (type fixnum up-or-left down-or-right))
   (vector up-or-left down-or-right))
@@ -92,20 +95,5 @@
 		     (progn (setf (aref arr h w) (funcall function))
 			    (iter next-h next-w next-r next-u-h next-u-w))))))
       (iter 0 0 'right (make-used-seq 0 arr-high) (make-used-seq 0 arr-width)))))
-
-
-(defun make-pgm-p2 (path-name p-width p-high arr)
-  (with-open-file (p path-name :direction :output)
-    (format p "P2 ~A ~A 255" p-width p-high)
-    (let ((ar-high (- p-high 1))
-	  (ar-width (- p-width 1)))
-      (labels ((iter (h w)
-		 (cond ((> h ar-high) nil)
-		       ((>= w ar-width)
-			(progn (print (aref arr h w) p)
-			       (iter (+ h 1) 0)))
-		       (t (progn (print (aref arr h w) p)
-				 (iter h (+ w 1)))))))
-	(iter 0 0)))))
 
 
