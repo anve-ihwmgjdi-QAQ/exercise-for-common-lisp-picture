@@ -1,3 +1,4 @@
+
 (defun make-pgm[p2] (path-name p-width p-high arr)
   (with-open-file (p path-name :direction :output)
     (format p "P2 ~A ~A 255" p-width p-high)
@@ -13,10 +14,10 @@
 	(iter 0 0)))))
 
 (defun make-pgm[p5] (path-name p-width p-high arr)
-  (with-open-file (p path-name :direction :output)
+  (with-open-file (p path-name :direction :output :element-type '(unsigned-byte 8))
     (do ((str (format nil "P5 ~A ~A 255~%" p-width p-high) (subseq str 1)))
 	((equal str ""))
-      (write-byte (char-code str) p))
+      (write-byte (char-code (aref str 0)) p))
     (let ((arr-high (- p-high 1))
 	  (arr-width (- p-width 1)))
       (labels ((iter (h w)
